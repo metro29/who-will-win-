@@ -1,0 +1,126 @@
+/* Basic styling */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  overflow: hidden;
+  background: #111;
+  color: #fff;
+  text-align: center;
+}
+
+/* Screens */
+#startScreen, #gameScreen, #resultScreen {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#gameScreen, #resultScreen { display: none; }
+
+/* Buttons */
+button {
+  padding: 20px 50px;
+  font-size: 2rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(45deg, #00aaff, #00ff99);
+  color: white;
+  transition: transform 0.2s;
+}
+button:hover { transform: scale(1.1); }
+
+/* Teams */
+#teams {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 50px;
+}
+.team {
+  width: 40%;
+  cursor: pointer;
+  transition: transform 0.2s, filter 0.2s, box-shadow 0.2s;
+}
+.team:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+  box-shadow: 0 0 30px #00aaff;
+}
+
+/* Result text */
+#resultScreen h1 {
+  font-size: 5rem;
+  animation: pop 0.5s ease forwards;
+}
+
+/* Pop animation */
+@keyframes pop {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+/* Disco lights for Seahawks */
+.disco {
+  animation: discoFlash 0.2s infinite;
+}
+@keyframes discoFlash {
+  0% { background-color: #111; }
+  25% { background-color: #00aaff; }
+  50% { background-color: #00ff99; }
+  75% { background-color: #00aaff; }
+  100% { background-color: #111; }
+}
+
+/* Explosion shake for Patriots */
+.shake {
+  animation: shake 0.5s infinite;
+}
+@keyframes shake {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(10px, -10px); }
+  50% { transform: translate(-10px, 10px); }
+  75% { transform: translate(10px,10px); }
+  100% { transform: translate(0,0); }
+}
+
+/* Decorations container */
+#decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Flying Seahawks logos */
+.flyingLogo {
+  position: absolute;
+  width: 50px;
+  animation: flyUp 3s ease-out forwards;
+}
+@keyframes flyUp {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-50px) rotate(720deg); opacity: 0; }
+}
+
+/* Flames / Sparks for Patriots */
+.spark {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #ff5500, #990000);
+  border-radius: 50%;
+  animation: sparkAnim 1s ease-out forwards;
+}
+@keyframes sparkAnim {
+  0% { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+}
