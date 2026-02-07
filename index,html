@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Football Celebration</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Start Screen -->
+<div id="startScreen">
+  <button id="startBtn">Start?</button>
+</div>
+
+<!-- Game Screen -->
+<div id="gameScreen">
+  <div id="teams">
+    <img src="https://upload.wikimedia.org/wikipedia/en/1/15/Seattle_Seahawks_logo.svg" class="team" id="seahawks">
+    <img src="https://upload.wikimedia.org/wikipedia/en/6/60/New_England_Patriots_logo.svg" class="team" id="patriots">
+  </div>
+</div>
+
+<!-- Result Screen -->
+<div id="resultScreen">
+  <h1 id="resultText"></h1>
+  <div id="decorations"></div>
+</div>
+
+<canvas id="confettiCanvas"></canvas>
+
+<!-- Sounds -->
+<audio id="cheerSound" src="https://www.soundjay.com/human/cheering-01.mp3"></audio>
+<audio id="explosionSound" src="https://www.soundjay.com/explosion/explosion-01.mp3"></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
