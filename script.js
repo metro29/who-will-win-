@@ -7,11 +7,9 @@ const patriots = document.getElementById('patriots');
 const resultText = document.getElementById('resultText');
 const body = document.body;
 const decorations = document.getElementById('decorations');
-const cheerSound = document.getElementById('cheerSound');
-const explosionSound = document.getElementById('explosionSound');
 const canvas = document.getElementById('confettiCanvas');
 
-// Start button click
+// Start button
 startBtn.addEventListener('click', () => {
   startScreen.style.display = 'none';
   gameScreen.style.display = 'flex';
@@ -20,15 +18,21 @@ startBtn.addEventListener('click', () => {
 // Create confetti
 const confettiInstance = confetti.create(canvas, { resize: true });
 
-// Seahawks win
+// LOCK after click
+function lockTeams() {
+  seahawks.style.pointerEvents = 'none';
+  patriots.style.pointerEvents = 'none';
+}
+
+// SEAHAWKS WIN
 seahawks.addEventListener('click', () => {
+  lockTeams();
   gameScreen.style.display = 'none';
   resultScreen.style.display = 'flex';
   body.classList.add('disco');
   resultText.textContent = "GO HAWKS! 🎉";
-  cheerSound.play();
 
-  // Confetti shower
+  // Confetti
   const confettiInterval = setInterval(() => {
     confettiInstance({
       particleCount: 150,
@@ -55,13 +59,25 @@ seahawks.addEventListener('click', () => {
   }, 6000);
 });
 
-// Patriots lose
+// DOUBLE CLICK = MEGA CELEBRATION
+seahawks.ondblclick = () => {
+  for (let i = 0; i < 500; i++) {
+    confettiInstance({
+      particleCount: 5,
+      spread: 360,
+      origin: { x: Math.random(), y: Math.random() - 0.2 },
+      colors: ['#69BE28', '#002244', '#A5ACAF']
+    });
+  }
+};
+
+// PATRIOTS LOSE
 patriots.addEventListener('click', () => {
+  lockTeams();
   gameScreen.style.display = 'none';
   resultScreen.style.display = 'flex';
   body.classList.add('shake');
   resultText.textContent = "LOSER 💥";
-  explosionSound.play();
 
   // Explosion confetti
   confettiInstance({
@@ -86,4 +102,11 @@ patriots.addEventListener('click', () => {
   }, 100);
 
   setTimeout(() => body.classList.remove('shake'), 3000);
+});
+
+// KEYBOARD SHORTCUTS
+document.addEventListener('keydown', e => {
+  if (e.key.toLowerCase() === 's') seahawks.click();
+  if (e.key.toLowerCase() === 'p') patriots.click();
+  if (e.key.toLowerCase() === 'r') location.reload();
 });
