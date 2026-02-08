@@ -1,4 +1,3 @@
-
 const startBtn = document.getElementById('startBtn');
 const startScreen = document.getElementById('startScreen');
 const gameScreen = document.getElementById('gameScreen');
@@ -18,16 +17,26 @@ startBtn.addEventListener('click', () => {
   gameScreen.style.display = 'flex';
 });
 
-// Create confetti
+// Confetti instance
 const confettiInstance = confetti.create(canvas, { resize: true });
 
-// Seahawks win
+// Lock after click
+function lockTeams() {
+  seahawks.style.pointerEvents = 'none';
+  patriots.style.pointerEvents = 'none';
+}
+
+// SEAHAWKS WIN
 seahawks.addEventListener('click', () => {
+  lockTeams();
   gameScreen.style.display = 'none';
   resultScreen.style.display = 'flex';
   body.classList.add('disco');
   resultText.textContent = "GO HAWKS! 🎉";
-  cheerSound.play();
+
+  // Play cheer audio
+  cheerSound.currentTime = 0;
+  cheerSound.play().catch(() => {});
 
   // Confetti shower
   const confettiInterval = setInterval(() => {
@@ -56,13 +65,29 @@ seahawks.addEventListener('click', () => {
   }, 6000);
 });
 
-// Patriots lose
+// DOUBLE CLICK = MEGA CONFETTI
+seahawks.ondblclick = () => {
+  for (let i = 0; i < 500; i++) {
+    confettiInstance({
+      particleCount: 5,
+      spread: 360,
+      origin: { x: Math.random(), y: Math.random() - 0.2 },
+      colors: ['#69BE28', '#002244', '#A5ACAF']
+    });
+  }
+};
+
+// PATRIOTS LOSE
 patriots.addEventListener('click', () => {
+  lockTeams();
   gameScreen.style.display = 'none';
   resultScreen.style.display = 'flex';
   body.classList.add('shake');
   resultText.textContent = "LOSER 💥";
-  explosionSound.play();
+
+  // Play explosion audio
+  explosionSound.currentTime = 0;
+  explosionSound.play().catch(() => {});
 
   // Explosion confetti
   confettiInstance({
@@ -72,7 +97,7 @@ patriots.addEventListener('click', () => {
     colors: ['#ff0000', '#ff9900', '#000000']
   });
 
-  // Sparks
+  // Sparks effect
   const sparksInterval = setInterval(() => {
     const spark = document.createElement('div');
     spark.className = 'spark';
@@ -86,5 +111,13 @@ patriots.addEventListener('click', () => {
     setTimeout(() => spark.remove(), 1000);
   }, 100);
 
+  // Stop shaking after 3 seconds
   setTimeout(() => body.classList.remove('shake'), 3000);
+});
+
+// KEYBOARD SHORTCUTS
+document.addEventListener('keydown', e => {
+  if (e.key.toLowerCase() === 's') seahawks.click();
+  if (e.key.toLowerCase() === 'p') patriots.click();
+  if (e.key.toLowerCase() === 'r') location.reload();
 });
