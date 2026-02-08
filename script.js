@@ -13,14 +13,17 @@ const canvas = document.getElementById('confettiCanvas');
 
 // Start button click
 startBtn.addEventListener('click', () => {
-  startScreen.style.display = 'none';
-  gameScreen.style.display = 'flex';
+  startScreen.classList.remove('screen-active');
+  startScreen.classList.add('screen-hidden');
+
+  gameScreen.classList.remove('screen-hidden');
+  gameScreen.classList.add('screen-active');
 });
 
 // Confetti instance
 const confettiInstance = confetti.create(canvas, { resize: true });
 
-// Lock after click
+// Lock teams after click
 function lockTeams() {
   seahawks.style.pointerEvents = 'none';
   patriots.style.pointerEvents = 'none';
@@ -29,8 +32,12 @@ function lockTeams() {
 // SEAHAWKS WIN
 seahawks.addEventListener('click', () => {
   lockTeams();
-  gameScreen.style.display = 'none';
-  resultScreen.style.display = 'flex';
+  gameScreen.classList.remove('screen-active');
+  gameScreen.classList.add('screen-hidden');
+
+  resultScreen.classList.remove('screen-hidden');
+  resultScreen.classList.add('screen-active');
+
   body.classList.add('disco');
   resultText.textContent = "GO HAWKS! 🎉";
 
@@ -58,7 +65,6 @@ seahawks.addEventListener('click', () => {
     setTimeout(() => logo.remove(), 3000);
   }, 300);
 
-  // Stop after 6 seconds
   setTimeout(() => {
     clearInterval(confettiInterval);
     clearInterval(flyLogos);
@@ -77,45 +83,84 @@ seahawks.ondblclick = () => {
   }
 };
 
-// PATRIOTS LOSE
+// PATRIOTS LOSE — super explosion
 patriots.addEventListener('click', () => {
   lockTeams();
-  gameScreen.style.display = 'none';
-  resultScreen.style.display = 'flex';
-  body.classList.add('shake');
+  gameScreen.classList.remove('screen-active');
+  gameScreen.classList.add('screen-hidden');
+
+  resultScreen.classList.remove('screen-hidden');
+  resultScreen.classList.add('screen-active');
+
+  body.classList.add('shake', 'patriotsFlash');
   resultText.textContent = "LOSER 💥";
 
   // Play explosion audio
   explosionSound.currentTime = 0;
   explosionSound.play().catch(() => {});
 
-  // Explosion confetti
-  confettiInstance({
-    particleCount: 200,
-    spread: 200,
-    origin: { y: 0.5 },
-    colors: ['#ff0000', '#ff9900', '#000000']
-  });
+  // directional confetti cannons
+  const birdColors = ['#ff0000','#ff9900','#000000'];
+  function fireCannons() {
+    confettiInstance({
+      particleCount: 50,
+      angle: 60,
+      spread: 90,
+      origin: { x: 0, y: 0.6 },
+      colors: birdColors,
+    });
+    confettiInstance({
+      particleCount: 50,
+      angle: 120,
+      spread: 90,
+      origin: { x: 1, y: 0.6 },
+      colors: birdColors,
+    });
+    confettiInstance({
+      particleCount: 100,
+      spread: 180,
+      origin: { y: 0.5 },
+      colors: birdColors,
+    });
+  }
+  fireCannons();
 
-  // Sparks effect
-  const sparksInterval = setInterval(() => {
-    const spark = document.createElement('div');
-    spark.className = 'spark';
-    const x = (Math.random() - 0.5) * 300;
-    const y = (Math.random() - 0.5) * 300;
-    spark.style.left = window.innerWidth / 2 + 'px';
-    spark.style.top = window.innerHeight / 2 + 'px';
-    spark.style.setProperty('--x', x + 'px');
-    spark.style.setProperty('--y', y + 'px');
-    decorations.appendChild(spark);
-    setTimeout(() => spark.remove(), 1000);
-  }, 100);
+  // BIG spark bursts
+  for (let i = 0; i < 25; i++) {
+    const bigSpark = document.createElement('div');
+    bigSpark.className = 'sparkBig';
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 200 + Math.random() * 100;
+    bigSpark.style.left = window.innerWidth / 2 + 'px';
+    bigSpark.style.top = window.innerHeight / 2 + 'px';
+    bigSpark.style.setProperty('--x', Math.cos(angle) * dist + 'px');
+    bigSpark.style.setProperty('--y', Math.sin(angle) * dist + 'px');
+    decorations.appendChild(bigSpark);
+    setTimeout(() => bigSpark.remove(), 1200);
+  }
 
-  // Stop shaking after 3 seconds
-  setTimeout(() => body.classList.remove('shake'), 3000);
+  // Firework style colorful particles
+  for (let i = 0; i < 40; i++) {
+    const fw = document.createElement('div');
+    fw.className = 'fireworkParticle';
+    const size = 8 + Math.random() * 8;
+    fw.style.width = size + 'px';
+    fw.style.height = size + 'px';
+    fw.style.background = birdColors[Math.floor(Math.random() * birdColors.length)];
+    fw.style.left = window.innerWidth / 2 + 'px';
+    fw.style.top = window.innerHeight / 2 + 'px';
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 150 + Math.random() * 150;
+    fw.style.setProperty('--x', Math.cos(angle) * distance + 'px');
+    fw.style.setProperty('--y', Math.sin(angle) * distance + 'px');
+    decorations.appendChild(fw);
+    setTimeout(() => fw.remove(), 1000);
+  }
+
+  setTimeout(() => body.classList.remove('shake', 'patriotsFlash'), 2000);
 });
 
-// KEYBOARD SHORTCUTS
+// Keyboard shortcuts
 document.addEventListener('keydown', e => {
   if (e.key.toLowerCase() === 's') seahawks.click();
   if (e.key.toLowerCase() === 'p') patriots.click();
