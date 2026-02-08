@@ -1,5 +1,7 @@
-/* Basic styling */
-body {
+/* Prevent scroll jump */
+html, body {
+  overscroll-behavior: none;
+  min-height: 100vh;
   margin: 0;
   font-family: 'Arial', sans-serif;
   overflow: hidden;
@@ -20,7 +22,22 @@ body {
   flex-direction: column;
 }
 
-#gameScreen, #resultScreen { display: none; }
+/* screen visible/hidden classes for smoother transitions */
+.screen-active {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.screen-hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
 
 /* Buttons */
 button {
@@ -54,7 +71,7 @@ button:hover {
 .team:hover {
   transform: scale(1.05) rotate(-2deg);
   filter: brightness(1.3);
-  box-shadow: 0 0 30px #00aaff;
+  box-shadow: 0 0 40px 5px #00ffff, 0 0 60px 10px #00ff99;
 }
 
 /* Result text */
@@ -69,7 +86,7 @@ button:hover {
   100% { transform: scale(1); }
 }
 
-/* Disco lights for Seahawks */
+/* Disco for Seahawks */
 .disco {
   animation: discoFlash 0.2s infinite;
 }
@@ -81,7 +98,7 @@ button:hover {
   100% { background-color: #111; }
 }
 
-/* Explosion shake for Patriots */
+/* Shake for Patriots */
 .shake {
   animation: shake 0.5s infinite;
 }
@@ -116,7 +133,7 @@ button:hover {
   100% { transform: translateY(-50px) rotate(720deg); opacity: 0; }
 }
 
-/* Flames / Sparks for Patriots */
+/* Sparks for Patriots */
 .spark {
   position: absolute;
   width: 20px;
@@ -130,7 +147,39 @@ button:hover {
   100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
 }
 
-/* Confetti canvas z-index */
+/* Supercharged Patriots effects */
+.patriotsFlash {
+  animation: patriotsFlashAnim 0.15s alternate 8;
+}
+@keyframes patriotsFlashAnim {
+  from { background: #000; }
+  to { background: #ff1a1a; }
+}
+.sparkBig {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #ff5500, #660000);
+  border-radius: 50%;
+  animation: sparkBigAnim 1.2s ease-out forwards;
+}
+@keyframes sparkBigAnim {
+  to {
+    transform: translate(var(--x), var(--y)) scale(0);
+    opacity: 0;
+  }
+}
+.fireworkParticle {
+  position: absolute;
+  border-radius: 50%;
+  animation: firework 1s ease-out forwards;
+}
+@keyframes firework {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.3); }
+}
+
+/* Confetti canvas */
 #confettiCanvas {
   position: absolute;
   top: 0;
@@ -139,14 +188,4 @@ button:hover {
   height: 100%;
   pointer-events: none;
   z-index: 500;
-}
-
-/* Extra hover sparkle effect for fun */
-.team:hover {
-  box-shadow: 0 0 40px 5px #00ffff, 0 0 60px 10px #00ff99;
-}
-
-/* Double-click mega confetti can also flash background */
-.megaConfetti {
-  animation: discoFlash 0.1s infinite;
 }
