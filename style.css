@@ -6,6 +6,7 @@ body {
   background: #111;
   color: #fff;
   text-align: center;
+  transition: background 0.3s;
 }
 
 /* Screens */
@@ -30,9 +31,12 @@ button {
   border-radius: 10px;
   background: linear-gradient(45deg, #00aaff, #00ff99);
   color: white;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-button:hover { transform: scale(1.1); }
+button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px #00aaff;
+}
 
 /* Teams */
 #teams {
@@ -48,8 +52,8 @@ button:hover { transform: scale(1.1); }
   transition: transform 0.2s, filter 0.2s, box-shadow 0.2s;
 }
 .team:hover {
-  transform: scale(1.05);
-  filter: brightness(1.2);
+  transform: scale(1.05) rotate(-2deg);
+  filter: brightness(1.3);
   box-shadow: 0 0 30px #00aaff;
 }
 
@@ -98,6 +102,7 @@ button:hover { transform: scale(1.1); }
   height: 100%;
   pointer-events: none;
   overflow: hidden;
+  z-index: 1000;
 }
 
 /* Flying Seahawks logos */
@@ -123,4 +128,25 @@ button:hover { transform: scale(1.1); }
 @keyframes sparkAnim {
   0% { transform: translate(0,0) scale(1); opacity: 1; }
   100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+}
+
+/* Confetti canvas z-index */
+#confettiCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 500;
+}
+
+/* Extra hover sparkle effect for fun */
+.team:hover {
+  box-shadow: 0 0 40px 5px #00ffff, 0 0 60px 10px #00ff99;
+}
+
+/* Double-click mega confetti can also flash background */
+.megaConfetti {
+  animation: discoFlash 0.1s infinite;
 }
