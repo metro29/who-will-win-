@@ -18,7 +18,6 @@
   <div id="teams">
     <img src="/who-will-win-/images/seahawks.png" class="team" id="seahawks" alt="Seahawks">
     <img src="/who-will-win-/images/patriots.png" class="team" id="patriots" alt="Patriots">
-
   </div>
 </div>
 
@@ -30,9 +29,12 @@
 
 <canvas id="confettiCanvas"></canvas>
 
-<!-- Sounds -->
-<audio id="cheerSound" src="https://www.soundjay.com/human/cheering-01.mp3"></audio>
-<audio id="explosionSound" src="https://www.soundjay.com/explosion/explosion-01.mp3"></audio>
+<!-- AUDIO (only change is preload="auto") -->
+<audio id="cheerSound" preload="auto"
+  src="https://www.soundjay.com/human/cheering-01.mp3"></audio>
+
+<audio id="explosionSound" preload="auto"
+  src="https://www.soundjay.com/explosion/explosion-01.mp3"></audio>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script src="script.js"></script>
